@@ -48,10 +48,47 @@ gotowy — sprawdza to `python scripts/check_dod.py`.
 <!-- DIAGRAM-V0:START -->
 ```mermaid
 flowchart LR
-    data["TODO: źródło danych"] --> model["TODO: kolejne elementy systemu"]
+    subgraph TRAIN["Trenowanie modelu"]
+        A["UCI Iranian Churn - dane (S1)"]
+        B["Kontrakt danych (S1)"]
+        C["Input normalization (S1)"]
+        D["Training-only filtering (S1)"]
+        E["Model preprocessing - sklearn Pipeline (S1)"]
+        F["DummyClassifier i LogisticRegression (S1)"]
+        G["Pipeline Kedro (S2 - plan)"]
+        H["Eksperymenty i artefakt modelu (S3 - plan)"]
+
+        A --> B --> C --> D --> E --> F
+        F -.-> G
+        G --> H
+    end
+
+    subgraph APP["System predykcyjny"]
+        U["Pracownik dzialu retencji"]
+        UI["Interfejs Streamlit (S5 - plan)"]
+        API["REST API (S4 - plan)"]
+        N["Input normalization (S1 - ponowne uzycie)"]
+        P["Model: preprocessing i predict_proba"]
+        R["Wynik: prawdopodobienstwo odejscia"]
+
+        U --> UI --> API --> N --> P --> R
+        R --> API
+        API --> UI
+    end
+
+    H -->|"Wczytanie artefaktu"| P
+    B -.->|"Zasady danych wejsciowych"| N
+
+    API --> DB["Persistence - PostgreSQL (S4-S5 - plan)"]
+
+    CLOUD["Google Cloud Run (S6 - plan)"]
+    CLOUD -.->|"Hosting"| UI
+    CLOUD -.->|"Hosting"| API
 ```
 
-TODO: krótki opis diagramu (3–5 zdań).
+System wykorzystuje zbiór danych Iranian Churn do przewidywania ryzyka odejścia klientów z firmy telekomunikacyjnej. W Sprincie 1 realizowane są przygotowanie i normalizacja danych, filtrowanie rekordów treningowych oraz budowa modeli klasyfikacyjnych przy wykorzystaniu biblioteki języka Python - scikit-learn.
+W kolejnych sprintach system zostanie rozbudowany o pipline Kedro, eksperymentalny ML, REST API i interfejs Stramlit.
+Wyniki predykcji będą zapisywane w bazie danych PostgreSQL, a docelowe rozwiązanie zostanie wdrożone w Google Cloud Run.
 <!-- DIAGRAM-V0:END -->
 
 ## Historia zmian architektury
