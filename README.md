@@ -16,15 +16,15 @@ powiązane, ale nie zawierają gotowych rozwiązań ani zadań do wykonania wcze
 
 | Pole | Wartość |
 |---|---|
-| Zespół i integrator Sprintu 1 | TODO |
-| Dataset (id z `docs/datasets.md`) | TODO |
-| Źródło, licencja i cytowanie (DOI) | TODO |
-| Data pobrania danych | TODO |
-| SHA-256 pliku danych (`fingerprint.json`) | TODO |
-| Dane osobowe w zbiorze i sposób postępowania | TODO |
-| Target i klasa pozytywna | TODO |
-| Metryka główna i uzasadnienie | TODO |
-| Użytkownik systemu i decyzja, którą wspiera model | TODO |
+| Zespół i integrator Sprintu 1 | s31686, s30754, s30383. Integrator: s31686 |
+| Dataset (id z `docs/datasets.md`) | 'iranian_churn' |
+| Źródło, licencja i cytowanie (DOI) | UCI Machine Learning Repository, Iranian Churn Dataset, CC BY 4.0, https://doi.org/10.24432/C5JW3Z |
+| Data pobrania danych | 15.10.2026 |
+| SHA-256 pliku danych (`fingerprint.json`) | 90d5fb6bd1630cd4de4b4d28fcf8b4cb92a8f6ab7484605b0799d47386f7dbe1 |
+| Dane osobowe w zbiorze i sposób postępowania | Brak bezpośrednich identyfikatorów klientów. Zwiera cechy demograficzne i dane o korzystaniuz usług. Dane wykorzystujemy w celach edukacyjnych. Demonstracje są wykonywane na danych fikcyjnych. |
+| Target i klasa pozytywna | 'Churn', klasa pozytywna: '1' (odejście klienta) |
+| Metryka główna i uzasadnienie | F1-score. Klasa pozytywna stanowi 15,71% obserwacji. F1 uwzględnia recall i precision, co pozwala na ocenę skuteczności wykrywania klientów zagrożonych odejściem bez polegania tylko na accuracy. |
+| Użytkownik systemu i decyzja, którą wspiera model | Dział utrzymania klientów operatora telekomunikacyjnego. System przewiduje ryzyko odejścia klienta oraz wspiera decyzję o podjęciu działań retenzyjnych. |
 <!-- KARTA-PROJEKTU:END -->
 
 ## Mapa projektu
