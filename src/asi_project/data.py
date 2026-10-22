@@ -204,6 +204,9 @@ def filter_training_rows(df: pd.DataFrame, contract: DatasetContract) -> pd.Data
     Decyzję i jej powód zapisz w notebooku 01.
     """
     keep = df[contract.target].map(label_text).notna()
+    # 300 dokładnych duplikatów wierszy usuwamy, żeby ten sam rekord nie trafił jednocześnie do treningu i testu (decyzja w notebooku 01, punkt 7).
+
+    keep &= ~df.duplicated()
     return df.loc[keep].copy()
 
 
