@@ -88,6 +88,35 @@ Najważniejsze pliki Sprintu 1:
 | `docs/architecture.md` | zespół | diagram v0 systemu docelowego |
 | `src/asi_project/datasets.yaml` | prowadząca | kontrakt datasetów — nie edytujemy |
 
+## Kedro quickstart
+
+Kedro jest przypięte w `requirements/preflight-s2.txt`. W środowisku `asi-ml` przygotuj
+zależności:
+
+```bash
+python -m pip install -r requirements/preflight-s2.txt -c constraints.txt
+```
+
+Pełne dane pobierz przez:
+
+```bash
+python scripts/download_data.py
+```
+
+Następnie uruchom pipeline na pełnych danych:
+
+```bash
+kedro run
+```
+
+Model zostanie zapisany w `data/06_models/`, a metryki w `data/08_reporting/`.
+Do uruchomienia bez pełnego datasetu służy środowisko CI z próbką
+`data/01_raw/sample.csv`:
+
+```bash
+kedro run --env ci
+```
+
 ## Gałęzie, Pull Requesty i review
 
 - Gałąź `main` jest chroniona. Każda zmiana trafia przez gałąź i Pull Request.

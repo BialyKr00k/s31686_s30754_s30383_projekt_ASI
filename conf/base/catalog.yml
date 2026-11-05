@@ -1,0 +1,31 @@
+# Data Catalog — nazwy datasetów używane przez pipeline'y (nody nie znają ścieżek).
+# Przepływ: surowe dane -> data/02_intermediate -> data/06_models -> data/08_reporting.
+# Środowisko ci (conf/ci/catalog.yml) nadpisuje te wpisy, żeby pracować na próbce.
+# Wyjścia pośrednie, których tu nie ma (np. X_train, X_test), Kedro trzyma w pamięci.
+
+# Pełne dane (poza gitem). Pobranie: python scripts/download_data.py
+# Uwaga: nagłówki pliku źródłowego mają podwójne spacje (np. "Call  Failure") —
+# pipeline data_processing musi je ujednolicić (asi_project.data.normalize_column_names).
+raw_data:
+  type: pandas.CSVDataset
+  filepath: data/01_raw/iranian_churn/Customer Churn.csv
+
+# Wyjście data_processing: dane po walidacji, input normalization i training-only filtering.
+prepared_data:
+  type: pandas.CSVDataset
+  filepath: data/02_intermediate/prepared_data.csv
+  save_args:
+    index: false
+
+# Wyjście data_science: wytrenowany sklearn Pipeline (model preprocessing + model).
+model:
+  type: pickle.PickleDataset
+  filepath: data/06_models/model.pkl
+
+# Wyjście data_science: metryki ewaluacji na zbiorze testowym.
+metrics:
+  type: json.JSONDataset
+  filepath: data/08_reporting/metrics.json
+  save_args:
+    indent: 2
+    ensure_ascii: false
