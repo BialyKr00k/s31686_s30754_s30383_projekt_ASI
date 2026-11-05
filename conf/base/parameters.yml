@@ -1,0 +1,6 @@
+# Parametry pipeline'ów. W nodach: "params:split" albo "params:split.test_size".
+# Wartości zgodne z project.yaml (sekcja split) i z baseline'em Sprintu 1.
+# Strategia splitu (stratified_random) wynika z kontraktu datasetu — nie jest parametrem.
+split:
+  test_size: 0.2
+  random_state: 42
