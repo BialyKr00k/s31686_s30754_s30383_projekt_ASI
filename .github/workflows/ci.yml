@@ -51,6 +51,9 @@ jobs:
       - name: pytest
         run: pytest
 
+      - name: Pipeline Kedro na próbce CI
+        run: kedro run --env ci
+
       - name: Stan projektu
         id: status
         run: python scripts/project_status.py | tee -a "$GITHUB_OUTPUT"
