@@ -56,7 +56,7 @@ def evaluate_model(
         "dummy": compute_metrics(y_test, dummy.predict(X_test)),
         "logistic_regression": compute_metrics(y_test, model.predict(X_test)),
     }
-    return build_metrics_record(
+    record = build_metrics_record(
         contract=contract,
         config=config,
         features=config.model_features,
@@ -65,3 +65,6 @@ def evaluate_model(
         data_mode="full",
         results=results,
     )
+    record["split"]["test_size"] = float(split["test_size"])
+    record["split"]["random_state"] = int(split["random_state"])
+    return record
