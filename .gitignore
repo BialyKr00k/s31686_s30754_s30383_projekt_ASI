@@ -36,3 +36,7 @@ dist/
 .DS_Store
 Thumbs.db
 .idea/
+
+
+# --- Sprint 3: lokalne logi W&B ---------------------------------------------
+wandb/

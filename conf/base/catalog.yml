@@ -29,3 +29,13 @@ metrics:
   save_args:
     indent: 2
     ensure_ascii: false
+
+
+# Sprint 3 — wyjście pipeline'u experiments: tabela porównawcza baseline'u i AutoGluona
+# (F1, czas predykcji, rozmiar pakietu, pamięć). Wyniki pośrednie
+# (baseline_result, ag_*_result) Kedro trzyma w pamięci.
+model_comparison:
+  type: pandas.CSVDataset
+  filepath: data/08_reporting/model_comparison.csv
+  save_args:
+    index: false
