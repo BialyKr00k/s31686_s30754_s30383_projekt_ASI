@@ -4,3 +4,33 @@
 split:
   test_size: 0.2
   random_state: 42
+
+# Sprint 3: eksperymenty (kedro run --pipelines experiments). Nie są uruchamiane w CI.
+experiments:
+  wandb:
+    entity: wnukdominika-polish-japanese-academy-of-information-tec
+    project: ASI-s31686-s30754-s30383
+  packages_dir: data/06_models/packages # pakiety modeli (model + metadata.json)
+  autogluon_dir: data/06_models/autogluon # katalogi robocze AutoGluona z treningu
+  measure_rows: 100 # ile wierszy X_test do pomiaru czasu predykcji
+  measure_repeats: 5 # ile pomiarów czasu (bierzemy medianę)
+
+  autogluon:
+    # 1) Lekki wariant: jeden LightGBM (+ ensemble), szybki i mały.
+    ag_gbm:
+      name: ag_gbm
+      presets: medium_quality
+      time_limit: 120
+      hyperparameters:
+        GBM: {}
+    # 2) Cięższy wariant: kilka rodzin drzew z baggingiem (good_quality).
+    #    Zwykle lepsze F1, ale większy artefakt i wolniejsza predykcja.
+    ag_trees_bagged:
+      name: ag_trees_bagged
+      presets: good_quality
+      time_limit: 180
+      hyperparameters:
+        GBM: {}
+        CAT: {}
+        RF: {}
+        XT: {}

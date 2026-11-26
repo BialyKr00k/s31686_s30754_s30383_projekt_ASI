@@ -1,17 +1,31 @@
 """Rejestr pipeline'ów Kedro."""
 
-from kedro.framework.project import find_pipelines
 from kedro.pipeline import Pipeline
+
+from asi_project.pipelines import data_processing, data_science, experiments
 
 
 def register_pipelines() -> dict[str, Pipeline]:
-    """Rejestruje pipeline'y z ``src/asi_project/pipelines/``.
+    """Rejestruje pipeline'y projektu.
 
-    ``find_pipelines`` znajduje każdy podpakiet z funkcją ``create_pipeline``
-    (``data_processing``, ``data_science``). ``__default__`` (czyli ``kedro run``)
-    to suma wszystkich znalezionych pipeline'ów — Kedro ustala kolejność nodów
-    na podstawie wejść i wyjść z Data Catalogu.
+    Pipeline'y są importowane jawnie (a nie przez ``find_pipelines``), bo od Kedro 1.5
+    ``kedro run --pipelines <nazwa>`` ładuje przez ``find_pipelines`` tylko pipeline
+    o tej nazwie — a ``experiments`` musi zawierać też przygotowanie danych i trening.
+
+    - ``__default__`` (czyli ``kedro run``, także w CI) to tylko przygotowanie danych
+      i baseline — bez AutoGluona i bez W&B.
+    - ``experiments`` (``kedro run --pipelines experiments``) to pełna ścieżka:
+      dane -> baseline -> eksperymenty -> W&B.
+      Zawiera data_processing i data_science, bo eksperymenty potrzebują
+      X_train / X_test / model, które Kedro trzyma tylko w pamięci jednego uruchomienia.
     """
-    pipelines = find_pipelines()
-    pipelines["__default__"] = sum(pipelines.values(), start=Pipeline([]))
-    return pipelines
+    data_processing_pipeline = data_processing.create_pipeline()
+    data_science_pipeline = data_science.create_pipeline()
+    training = data_processing_pipeline + data_science_pipeline
+
+    return {
+        "__default__": training,
+        "data_processing": data_processing_pipeline,
+        "data_science": data_science_pipeline,
+        "experiments": training + experiments.create_pipeline(),
+    }
